@@ -25,7 +25,7 @@ RUN pip install -r requirements.txt
 
 # Copy Django project
 COPY backend/ ./backend
-COPY manage.py .
+COPY backend/manage.py .
 
 # Copy frontend build into Django static folder
 COPY --from=frontend-build /app/frontend/dist ./backend/static/
