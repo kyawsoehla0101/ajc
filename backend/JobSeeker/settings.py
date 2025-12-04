@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('django-insecure-s$36g^pyo9l9efi-$p3kk9f=+p$t9')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', True)
@@ -139,7 +139,7 @@ DATABASES = {
 # Optional but recommended:
 TIME_ZONE = "Asia/Yangon"
 USE_TZ = True
-
+IS_DOCKER_BUILD = os.environ.get("IS_DOCKER_BUILD") == "1"
 
 
 
@@ -262,7 +262,7 @@ DEFAULT_FROM_EMAIL = "no-reply@yourdomain.com"
 #Meaida files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-IS_DOCKER_BUILD = os.environ.get("IS_DOCKER_BUILD") == "1"
+
 
 if IS_DOCKER_BUILD:
     DATABASES = {
