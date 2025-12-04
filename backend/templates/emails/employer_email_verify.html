@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify Your Employer Account</title>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+    .wrapper {
+      width: 100%;
+      padding: 24px 0;
+      background-color: #f4f6f9;
+    }
+    .container {
+      max-width: 620px;
+      margin: auto;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+    .header {
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      padding: 26px;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .content {
+      padding: 32px;
+      color: #333;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #2563eb;
+      color: #fff !important;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #7a7a7a;
+      padding: 22px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+
+      <div class="header">
+        Verify Your Employer Account
+      </div>
+
+      <div class="content">
+        <p>Hello {{ email }},</p>
+
+        <p>
+          Thank you for registering your employer account at <strong>Arakkha Job Connect</strong>.
+          Before you can access your dashboard, please confirm your email address.
+        </p>
+
+        <p style="text-align: center;">
+          <a href="{{ verify_url }}" class="btn">Verify Email</a>
+        </p>
+
+        <p>If the button above does not work, copy and paste this link into your browser:</p>
+
+        <p style="color: #2563eb; font-size: 13px;">
+          {{ verify_url }}
+        </p>
+
+        <p>
+          If you did not register this employer account, you can safely ignore this email.
+        </p>
+      </div>
+
+      <div class="footer">
+        © {{ year }} Arakkha Job Connect — Helping Employers Hire Smarter.
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

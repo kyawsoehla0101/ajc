@@ -1,0 +1,138 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static admin_urls %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <style>
+    /* —— Scoped, tiny styles just for this page —— */
+    .noti-wrap { max-width: 960px; }
+    .noti-head { display:flex; align-items:center; gap:12px; margin:0 0 16px; }
+    .noti-icon { width:36px; height:36px; display:grid; place-items:center; border-radius:8px; background:#2563eb20; color:#2563eb; }
+    .noti-title { font-size:22px; font-weight:600; margin:0; }
+    .badge { display:inline-block; padding:2px 8px; font-size:12px; border-radius:999px; line-height:20px; vertical-align:middle; }
+    .badge-type { background:#e0f2fe; color:#0369a1; }
+    .badge-read { background:#dcfce7; color:#166534; }
+    .badge-unread { background:#fee2e2; color:#991b1b; }
+
+    .noti-grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+    @media (max-width: 800px) { .noti-grid { grid-template-columns: 1fr; } }
+
+    .card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:16px; }
+    .card h3 { font-size:14px; margin:0 0 12px; color:#374151; text-transform:uppercase; letter-spacing:.03em; }
+    .meta { display:grid; grid-template-columns: 160px 1fr; gap:8px 12px; }
+    .meta label { color:#6b7280; }
+    .msg { font-size:15px; line-height:1.5; }
+    .related a.button { margin-left:8px; }
+
+    .submit-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .submit-row .button { background:#2563eb; border-color:#1d4ed8; }
+    .submit-row .button.secondary { background:#6b7280; border-color:#4b5563; }
+  </style>
+{% endblock %}
+
+{% block nav-sidebar %}
+  {% if available_apps %}
+    {% include "admin/nav_sidebar.html" with app_list=available_apps %}
+  {% else %}
+    {{ block.super }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div id="content" class="colM noti-wrap">
+
+  <!-- Header -->
+  <div class="noti-head">
+    <div class="noti-icon" aria-hidden="true">🔔</div>
+    <h1 class="noti-title">Notification Detail</h1>
+    <span class="badge badge-type">{{ notification.type }}</span>
+    {% if notification.is_read %}
+      <span class="badge badge-read">Read</span>
+    {% else %}
+      <span class="badge badge-unread">Unread</span>
+    {% endif %}
+  </div>
+
+  <div class="noti-grid">
+    <!-- Meta -->
+    <section class="card">
+      <h3>Meta</h3>
+      <div class="meta">
+        <label>User</label>
+        <div class="readonly">{{ notification.user.email }}</div>
+
+        <label>Created</label>
+        <div class="readonly">{{ notification.created_at|date:"M d, Y, g:i a" }}</div>
+
+        <label>Status</label>
+        <div class="readonly">
+          {% if notification.is_read %}
+            <span class="badge badge-read">Read</span>
+          {% else %}
+            <span class="badge badge-unread">Unread</span>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Related object -->
+    <section class="card related">
+      <h3>Related object</h3>
+      {% if related %}
+        <div class="readonly">
+          {{ related }}
+          {% if related_admin_url %}
+            <a class="button" href="{{ related_admin_url }}">Open in admin</a>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="readonly"><span class="help">Deleted or unavailable</span></div>
+      {% endif %}
+    </section>
+
+    <!-- Job detail (safe loop) -->
+    {% if job %}
+    <section class="card" style="grid-column: 1 / -1;">
+      <h3>Job Detail</h3>
+      <div class="meta">
+        {% for label, value in job_info %}
+          <label>{{ label }}</label>
+          <div class="readonly">{{ value }}</div>
+        {% endfor %}
+
+        {% if job_admin_url %}
+          <label>Open in Admin</label>
+          <div class="readonly">
+            <a class="button" href="{{ job_admin_url }}">Edit Job</a>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- Message -->
+    <section class="card" style="grid-column: 1 / -1;">
+      <h3>Message</h3>
+      <div class="msg"><strong>{{ notification.message }}</strong></div>
+    </section>
+  </div>
+
+  <!-- Actions -->
+  <div class="submit-row">
+    <a href="{% url 'admin-notifications' %}{% if back_query %}?{{ back_query }}{% endif %}" class="button secondary">← Back to list</a>
+
+    {% if notification.is_read %}
+      <form method="post" action="{% url 'admin-notifications-unread' notification.id %}{% if back_query %}?{{ back_query }}{% endif %}">
+        {% csrf_token %}
+        <button type="submit" class="button">Mark unread</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'admin-notifications-mark-read' notification.id %}{% if back_query %}?{{ back_query }}{% endif %}">
+        {% csrf_token %}
+        <button type="submit" class="button">Mark read</button>
+      </form>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

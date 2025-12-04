@@ -1,0 +1,38 @@
+{
+  "index.html": {
+    "file": "assets/index-CTSz8E5c.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "css": [
+      "assets/index-BMSblXeH.css"
+    ],
+    "assets": [
+      "assets/logo-BYZ73V04.png",
+      "assets/jobseekerphoto-EmQGLt-7.jpg",
+      "assets/ajax-loader-BcnMEykj.gif",
+      "assets/slick-BlzDm7g2.svg",
+      "assets/arakkha-job-connect-logo-RifybHVK.jpg"
+    ]
+  },
+  "node_modules/slick-carousel/slick/ajax-loader.gif": {
+    "file": "assets/ajax-loader-BcnMEykj.gif",
+    "src": "node_modules/slick-carousel/slick/ajax-loader.gif"
+  },
+  "node_modules/slick-carousel/slick/fonts/slick.svg": {
+    "file": "assets/slick-BlzDm7g2.svg",
+    "src": "node_modules/slick-carousel/slick/fonts/slick.svg"
+  },
+  "src/assets/images/arakkha-job-connect-logo.jpg": {
+    "file": "assets/arakkha-job-connect-logo-RifybHVK.jpg",
+    "src": "src/assets/images/arakkha-job-connect-logo.jpg"
+  },
+  "src/assets/images/jobseekerphoto.jpg": {
+    "file": "assets/jobseekerphoto-EmQGLt-7.jpg",
+    "src": "src/assets/images/jobseekerphoto.jpg"
+  },
+  "src/assets/images/logo.png": {
+    "file": "assets/logo-BYZ73V04.png",
+    "src": "src/assets/images/logo.png"
+  }
+}

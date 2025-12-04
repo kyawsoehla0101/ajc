@@ -1,0 +1,22 @@
+{% load static i18n %}
+
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <a href="{% url 'admin:index' %}">
+      <img src="{% static 'branding/logo.svg' %}" alt="logo" class="sidebar-logo">
+      <span>JobSeeker Admin</span>
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      <li><a href="{% url 'admin:index' %}"
+          class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+          🏠 Dashboard</a></li>
+      <li><a href="{% url 'admin:Jobs_job_changelist' %}">💼 Jobs</a></li>
+      <li><a href="{% url 'admin:Applications_application_changelist' %}">📑 Applications</a></li>
+      <li><a href="{% url 'admin:Notification_notification_changelist' %}">🔔 Notifications</a></li>
+      <li><a href="{% url 'admin:Accounts_customuser_changelist' %}">👤 Users</a></li>
+    </ul>
+  </nav>
+</aside>

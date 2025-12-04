@@ -1,0 +1,39 @@
+<<<<<<< HEAD
+
+*.py[cod]
+=======
+# ---- Python ----
+__pycache__/
+*.pyc
+>>>>>>> d5235f4d34befedb1c14d661cbb712c7518f58b1
+*.pyo
+*.pyd
+
+# ---- Django ----
+# keep migrations in Git! (don't ignore them)
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# ---- Node/Vite (frontend) ----
+node_modules/
+dist/
+.build/
+.cache/
+
+<<<<<<< HEAD
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+=======
+# ---- IDE/Env ----
+.env
+.vscode/
+.idea/
+.pytest_cache/
+.mypy_cache/
+.eggs/
+*.egg-info/
+>>>>>>> d5235f4d34befedb1c14d661cbb712c7518f58b1

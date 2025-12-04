@@ -1,0 +1,154 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+{% load i18n static admin_urls admin_list %}
+{# Inject bell into the right-side user tools #}
+{% block nav-sidebar %}
+{% if available_apps %}
+{% include "admin/nav_sidebar.html" with app_list=available_apps %}
+{% else %}
+{# Fallback for pages not using your custom view #}
+{% include "admin/nav_sidebar.html" with app_list=app_list %}
+{% endif %}
+{% endblock %}
+{% block usertools %}
+<div id="header-tools" class="user-tools">
+  {# existing user tools #}
+  {{ block.super }}
+  <link rel="icon" href="{% static 'download.jpg' %}">
+  <style>
+    /* small, tasteful tweaks for the brand area */
+    .site-name .brand-name {
+      font-weight: 700;
+      margin-left: 8px;
+      letter-spacing: .2px;
+    }
+
+    .brand-logo {
+      height: 22px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 640px) {
+      .brand-name {
+        display: none;
+      }
+    }
+  </style>
+
+  {# Bell icon with unread count; link to our page #}
+  <a href="{% url 'admin-notifications' %}" id="admin-noti-link" style="margin-left:12px; position:relative;">
+    <!-- Simple SVG bell so we don't need extra libs -->
+    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 22a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2zm6-6v-5a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2z" fill="currentColor" />
+    </svg>
+    <span id="admin-noti-badge"
+      style="display:inline-block; min-width:16px; padding:0 4px; font-size:11px; line-height:16px; 
+                   background:#d9534f; color:#fff; border-radius:8px; position:absolute; top:-6px; right:-10px; text-align:center;">
+      0
+    </span>
+  </a>
+</div>
+{% endblock %}
+{# Optional polling script #}
+{% block extrahead %}
+{{ block.super }}
+<style>
+  .submit-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .submit-row .button,
+  .submit-row .deletelink {
+    min-width: 130px;
+    text-align: center;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Secondary (Back) */
+  .submit-row .secondary {
+    background: #6b7280;
+    color: #fff;
+  }
+
+  /* Primary (Mark read/unread) */
+  .submit-row .button {
+    background: #2563eb;
+    color: #fff;
+  }
+
+  /* Delete (red) */
+  .submit-row .deletelink {
+    background: #dc2626;
+    /* red background */
+    color: #fff !important;
+  }
+
+  .submit-row .deletelink::before {
+    content: none !important;
+    /* removes the cross icon */
+  }
+
+  .submit-row {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .submit-row .action-btn,
+  .submit-row .button,
+  .submit-row .deletelink {
+    min-width: 100px;
+    /* same width */
+    text-align: center;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  /* Make brand text white */
+  #site-name,
+  #site-name a,
+  #site-name .brand-name {
+    color: #fff !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    async function refreshNotiCount() {
+      try {
+        const res = await fetch("{% url 'admin-notifications-count' %}", { credentials: 'same-origin' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const el = document.getElementById('admin-noti-badge');
+        if (el) {
+          el.textContent = data.unread || 0;
+          el.style.visibility = (data.unread > 0) ? 'visible' : 'hidden';
+        }
+      } catch (e) { }
+    }
+    refreshNotiCount();
+    setInterval(refreshNotiCount, 30000); // every 30s
+  });
+</script>
+{% endblock %}
+{% block branding %}
+<h1 id="site-name" class="site-name">
+  <a href="{% url 'admin:index' %}">
+    <img src="{% static 'a.png' %}" alt="JobSeeker" class="brand-logo">
+    <span class="brand-name">JobSeeker Admin</span>
+  </a>
+</h1>
+{% endblock %}

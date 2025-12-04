@@ -1,0 +1,31 @@
+#saved-jobs-jobseekerprofile
+http://127.0.0.1:8000/application/save/job/job_id/
+http://127.0.0.1:8000/application/saved/jobs/
+http://127.0.0.1:8000/application/saved/job/detail/save_job.id/
+http://127.0.0.1:8000/application/saved/job/remove/save_job.id/
+
+#applied-jobs-jobseekerprofile
+http://127.0.0.1:8000/application/application/<uuid:job_id>/apply/
+http://127.0.0.1:8000/application/application/apply/jobs/list/
+http://127.0.0.1:8000/application/application/apply/job/detail/app_id/ #detail
+http://127.0.0.1:8000/application/application/apply/job/remove/app_id/ #remove
+
+#application for employer dashboard
+http://127.0.0.1:8000/application/employer/applications/
+http://127.0.0.1:8000/application/employer/application/detail/app_id/
+http://127.0.0.1:8000/application/employer/application/delete/app_id/
+
+#upate status application
+
+http://127.0.0.1:8000/application/applications/1dd46eca-e6d0-409e-b802-f586db1ff13a/update-status/
+
+http://127.0.0.1:8000/application/employer/application/pending/
+http://127.0.0.1:8000/application/employer/application/reviewed/
+http://127.0.0.1:8000/application/employer/application/rejected/
+http://127.0.0.1:8000/application/employer/application/shortlist/
+http://127.0.0.1:8000/application/employer/application/hired/   
+
+
+
+
+

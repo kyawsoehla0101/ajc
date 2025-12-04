@@ -1,0 +1,6 @@
+http://127.0.0.1:8000/accounts-employer/company/
+http://127.0.0.1:8000/accounts-employer/job/company/company_uuid/
+
+http://127.0.0.1:8000/accounts-employer/company/search/
+
+

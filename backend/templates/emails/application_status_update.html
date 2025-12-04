@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Application Status Update</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f4f4f7;
+      margin: 0;
+      padding: 0;
+    }
+    .wrapper {
+      width: 100%;
+      padding: 24px 0;
+      background-color: #f4f4f7;
+    }
+    .container {
+      max-width: 620px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+    .header {
+      background: linear-gradient(90deg, #0ea5e9, #0284c7);
+      padding: 22px 28px;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .content {
+      padding: 28px;
+      color: #2d2d2d;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 16px;
+      font-weight: bold;
+      font-size: 13px;
+      margin: 14px 0;
+    }
+    /* Dynamic color via Django injected class */
+    .status-hired { background: #dcfce7; color: #166534; }
+    .status-rejected { background: #fee2e2; color: #991b1b; }
+    .status-shortlist { background: #e0f2fe; color: #0369a1; }
+    .status-review { background: #fef9c3; color: #854d0e; }
+    .status-pending { background: #f3f4f6; color: #374151; }
+
+    .btn {
+      display: inline-block;
+      background-color: #0ea5e9;
+      color: #ffffff !important;
+      padding: 12px 22px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: 18px;
+    }
+
+    .footer {
+      font-size: 12px;
+      text-align: center;
+      color: #6b7280;
+      padding: 22px;
+    }
+
+    .job-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        Application Status Update
+      </div>
+
+      <div class="content">
+        <p>Hello {{ username }},</p>
+        {% if status_label == "Hired" %}
+        <p>Congratulations! We are thrilled to inform you that you have been <strong>hired</strong> for the position of <span class="job-title">“{{ job_title }}”</span>. Welcome aboard!</p>
+        {% elif status_label == "Reviewed" %}
+        <p>Your application for the position of <span class="job-title">“{{ job_title }}”</span> has been <strong>reviewed</strong> by our hiring team. We appreciate your interest and the time you invested in applying. We will be in touch with any further updates regarding your application.</p>
+        {% elif status_label == "Shortlisted" %}
+        <p>Good news! Your application for the position of <span class="job-title">“{{ job_title }}”</span> has been <strong>shortlisted</strong>. We were impressed with your qualifications and would like to invite you to the next stage of our hiring process.</p>
+        {% elif status_label == "Rejected" %}
+        <p>We appreciate your interest in the position of <span class="job-title">“{{ job_title }}”</span>. After careful consideration, we regret to inform you that we will not be moving forward with your application at this time. We encourage you to apply for future opportunities that match your skills and experience.</p>
+        {% else %}
+        <p>
+          Your application for the position 
+          <span class="job-title">“{{ job_title }}”</span>
+          has been {{status_label}} by the employer.
+        </p>
+        {% endif %}
+        <div class="status-badge status-{{ status_class }}">
+          Status: {{ status_label }}
+        </div>
+        <p>
+          You can view additional details or track your progress by clicking the button below.
+        </p>
+        <p style="text-align:center;">
+          <a href="{{ application_link }}" class="btn">View Application</a>
+        </p>
+        <p>
+          We wish you the best of luck in your job search journey!
+        </p>
+      </div>
+      <div class="footer">
+        © {{ year }} Arakkha Job Connect — Helping talents and employers connect.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

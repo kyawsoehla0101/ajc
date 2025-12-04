@@ -1,0 +1,7 @@
+Notifications
+------------
+http://127.0.0.1:8000/notifications/notifications/applications/
+http://127.0.0.1:8000/notifications/notifications/applications/noti-id/mark-read/
+http://127.0.0.1:8000/notifications/notifications/applications/noti-id/mark-unread/
+http://127.0.0.1:8000/notifications/notifications/applications/delete/<uuid:pk>/
+http://127.0.0.1:8000/notifications/notifications/applications/all-delete/

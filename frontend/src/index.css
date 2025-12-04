@@ -1,0 +1,116 @@
+@import "tailwindcss";
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
+@layer utilities {
+  .custom-blue-border {
+    border-color: var(--blue-11, #0f4c81);
+  }
+  .custom-blue-background {
+    background-color: var(--blue-11, #0f4c81);
+  }
+  .custom-blue-text {
+    color: var(--blue-11, #0f4c81);
+  }
+  .nav-hover-blue:hover {
+    color: var(--blue-11, #0f4c81);
+  }
+  .hover-blue:hover {
+    color: var(--blue-11, #0d4270);
+  }
+  .index-Dcw0pk-hindex-Dcw0pk-hindex-Dcw0pk-hindex-Dcw0pk-h:hover {
+    background-color: var(--blue-11, #0d4270);
+  }
+  .blue-placeholder::placeholder {
+    color: var(--blue-11, #0d4270);
+  }
+  .blue-bg-hover:hover {
+    background-color: var(--blue-11, #0f4c81);
+  }
+  .blue-border-color {
+    border: var(--blue-11, #0f4c81);
+  }
+
+  .gray-text-custom {
+    color: var(--blue-11, #1a1a1a);
+  }
+
+  .company-border-custom {
+    border-color: var(--blue-11, #e6f4fe);
+  }
+
+  .feacture-company-color {
+    color: var(--blue-11, #1e88e5);
+  }
+
+  .search-button {
+    background-color: var(--blue-11, #ffc947);
+  }
+  .hover-search-button:hover {
+    background-color: var(--blue-11, #f3bc3b);
+  }
+
+  .active-job-color {
+    background-color: var(--blue-11, #eaeaea);
+  }
+
+  .sky-bg-employer {
+    background-color: #e0f2fe; /* Tailwind bg-sky-50 */
+    min-height: 100vh;
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  /* SlideDown Animation */
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  .animate-slideDown {
+    animation: slideDown 0.3s ease-out;
+  }
+}
+
+@media (max-width: 483px) {
+  .slick-dots {
+    bottom: -50px !important;
+  }
+}
+
+/* description css */
+.ql-toolbar {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.ql-container {
+  border-radius: 0 0 0.5rem 0.5rem;
+  min-height: 250px;
+}
+.ql-editor {
+  min-height: 220px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.ql-toolbar.ql-snow {
+  border-bottom: none !important;
+}
+
+.ql-container.ql-snow {
+  border-top: 1px solid #d1d5db !important;
+  border-bottom: none !important;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.container {
+  max-width: 1140px !important;
+}
+
+.font-inter {
+  font-family: "Inter", sans-serif;
+}

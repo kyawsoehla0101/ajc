@@ -1,0 +1,20 @@
+http://127.0.0.1:8000/accounts-jobseeker/skill/ #get and post
+http://127.0.0.1:8000/accounts-jobseeker/skill/skill_id/ #single get,update and,delete
+
+http://127.0.0.1:8000/accounts-jobseeker/education/
+http://127.0.0.1:8000/accounts-jobseeker/education/education_id/
+
+http://127.0.0.1:8000/accounts-jobseeker/experience/
+http://127.0.0.1:8000/accounts-jobseeker/experience/experience_id/
+
+http://127.0.0.1:8000/accounts-jobseeker/language/
+http://127.0.0.1:8000/accounts-jobseeker/language/language_id/
+
+http://127.0.0.1:8000/accounts-jobseeker/jobseekerprofile/
+
+#edit for jobsekerprofile image or text 
+http://127.0.0.1:8000/accounts-jobseeker/jobseekerprofile/jobseekerprofile_id/
+
+
+http://127.0.0.1:8000/accounts-jobseeker/resume/
+

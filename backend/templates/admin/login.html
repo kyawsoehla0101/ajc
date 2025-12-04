@@ -1,0 +1,95 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{# Hide sidebar/breadcrumbs/tools on login #}
+{% block nav-sidebar %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block usertools %}{% endblock %}
+{% block welcome-msg %}{% endblock %}
+{% block logout-link %}{% endblock %}
+
+{# Remove the default "Log in" page title #}
+{% block content_title %}{% endblock %}
+
+{# Body class so we can scope styles #}
+{% block bodyclass %}login{% endblock %}
+
+{# OPTIONAL: replace branding for this page with a compact version #}
+{% block branding %}
+  <h1 id="site-name" class="site-name" style="margin:0; padding:6px 16px;">
+    <a href="{% url 'admin:index' %}" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
+     
+      <span style="font-size:18px; color:#fff; font-weight:600;">JobSeeker Admin</span>
+    </a>
+  </h1>
+{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    /* Shrink the header height on login page */
+    .login #header { padding: 4px 0; }
+    .login #branding { padding: 0; }
+    .login #branding img { max-height: 36px; height: 36px; width: auto; }
+
+    /* Center the card */
+    #content { display:flex; justify-content:center; padding: 40px 0 60px; }
+    .login-wrap { width:100%; display:flex; justify-content:center; }
+    .login-card {
+      width: 420px; background:#fff; border:1px solid #e5e7eb; border-radius:10px;
+      box-shadow:0 4px 16px rgba(0,0,0,.05); overflow:hidden;
+    }
+
+    /* Card header */
+    .login-header { background:#2c6b7f; color:#fff; padding:16px 20px 10px; text-align:center; }
+    .login-logo { max-height:80px; width:auto; display:block; margin:0 auto 10px; }
+    .login-title { margin:0; font-size:18px; font-weight:600; }
+
+    /* Form */
+    .login-body { padding:18px 20px 22px; }
+    #login-form .form-row { margin:10px 0 14px; text-align:left; }
+    #login-form label { display:block; font-size:13px; color:#4b5563; margin-bottom:6px; }
+    #login-form input[type="text"],
+    #login-form input[type="email"],
+    #login-form input[type="password"] { width:100%; box-sizing:border-box; padding:10px 12px; }
+    .submit-row { display:flex; justify-content:center; margin-top:6px; }
+    .submit-row input[type="submit"] { min-width:110px; }
+    .errornote { margin:0 0 12px; text-align:center; }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="login-wrap">
+    <div class="login-card">
+
+      <div class="login-header">
+        {# Use your preferred logo file #}
+        <img src="{% static 'a.png' %}" alt="JobSeeker Logo" class="login-logo">
+        <h1 class="login-title">{{ site_header|default:"JobSeeker Admin" }}</h1>
+      </div>
+
+      <div class="login-body">
+        {% if form.errors and not form.non_field_errors %}
+          <p class="errornote">{% trans "Please enter the correct email and password." %}</p>
+        {% endif %}
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}<p class="errornote">{{ error }}</p>{% endfor %}
+        {% endif %}
+
+        <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+          <div class="form-row">
+            {{ form.username.label_tag }} {{ form.username }}
+          </div>
+          <div class="form-row">
+            {{ form.password.label_tag }} {{ form.password }}
+          </div>
+          {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+          <div class="submit-row">
+            <input type="submit" value="{% trans 'Log in' %}">
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

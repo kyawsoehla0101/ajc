@@ -1,0 +1,180 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static admin_urls %}
+
+{% block nav-sidebar %}{{ block.super }}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<style>
+  td,th{ color: rgba(36, 51, 108, 0.67); }
+
+  .noti-actions .button,
+  .row-actions .button {
+    display:inline-block; min-width:30px; text-align:center;
+    padding:4px 8px; font-size:13px; line-height:1.4;
+    border-radius:4px; color:#fff !important; border:none; cursor:pointer;
+    background:#1e73be;
+  }
+  .noti-actions .button:hover,
+  .row-actions .button:hover { background:#1a5bb8; }
+
+  .noti-toolbar { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+
+  .noti-tabs a {
+    display:inline-block; padding:6px 10px; border-radius:6px; text-decoration:none;
+    border:1px solid #c3c4c7; background:#f6f7f7; color:#2c3338; font-weight:600;
+  }
+  .noti-tabs a.active { background:#1a5bb8; color:#fff; border-color:black; }
+
+  .noti-badge {
+    display:inline-block; min-width:18px; padding:0 6px; line-height:18px;
+    font-size:11px; background:#d9534f; color:#fff; border-radius:9px; margin-left:6px;
+  }
+
+  .noti-table th, .noti-table td { vertical-align:middle; }
+  .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px;
+          border:1px solid #c3c4c7; background:#f1f5f9; color:#111; }
+  .pill.unread { background:#ffe9e6; border-color:#ffcabf; }
+  .row-actions a { margin-right:8px; }
+
+  /* checkbox column */
+  .sel-col { width:36px; text-align:center; }
+  .sel-col input[type="checkbox"] { transform:scale(1.15); cursor:pointer; }
+
+  /* read/unread row styles (optional, nicer UX) */
+  tr.unread { background:#fffdf8; font-weight:600; }
+  tr.read { opacity:.75; }
+</style>
+
+<h1>Job Notifications</h1>
+
+<div class="noti-toolbar">
+  <div class="noti-tabs">
+    {% with q_unread='?status=unread' q_all='?status=all' %}
+      <a href="{% url 'admin-notifications' %}{{ q_unread }}" class="{% if status_filter == 'unread' %}active{% endif %}">
+        Unread <span class="noti-badge">{{ unread_count }}</span>
+      </a>
+      <a href="{% url 'admin-notifications' %}{{ q_all }}" class="{% if status_filter == 'all' %}active{% endif %}">
+        All
+      </a>
+    {% endwith %}
+  </div>
+
+  <div class="spacer" style="flex:1"></div>
+
+  <div class="noti-actions">
+    <form method="post" action="{% url 'admin-notifications-mark-all' %}">
+      {% csrf_token %}
+      <input type="hidden" name="status" value="{{ status_filter }}">
+      <button type="submit" class="button">Mark all as read</button>
+    </form>
+  </div>
+</div>
+
+{# === BULK ACTIONS (separate form; NOT wrapping the table) === #}
+<form method="post" action="" id="bulk-form" style="margin:8px 0 12px; display:flex; gap:8px; align-items:center;">
+  {% csrf_token %}
+  <input type="hidden" name="status" value="{{ status_filter }}">
+  <select name="action" id="bulk-action">
+    <option value="bulk_delete">Remove selected</option>
+  </select>
+  <button type="submit" class="button" id="bulk-go">Go</button>
+</form>
+
+<div class="module">
+  <table class="adminlist noti-table">
+    <thead>
+      <tr>
+        <th class="sel-col">
+          <input type="checkbox" id="select-all">
+        </th>
+        <th style="width:28%">User</th>
+        <th>Message</th>
+        <th style="width:140px">Type</th>
+        <th style="width:180px">Created</th>
+        <th style="width:190px">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for n in page_obj.object_list %}
+      <tr class="{% if n.is_read %}read{% else %}unread{% endif %}">
+        <td class="sel-col">
+          <input type="checkbox" name="ids" value="{{ n.id }}" class="row-check" form="bulk-form">
+        </td>
+        <td>{{ n.user.email }}</td>
+        <td>{{ n.message|truncatechars:80 }}</td>
+        <td><span class="pill {% if not n.is_read %}unread{% endif %}">{{ n.type }}</span></td>
+        <td>{{ n.created_at|date:"M d, Y · h:i A" }}</td>
+        <td class="row-actions">
+          <a href="{% url 'admin-notification-detail' n.id %}?status={{ request.GET.status }}&page={{ page_obj.number|default:1 }}"
+             class="button">Detail</a>
+
+          {% if not n.is_read %}
+            {# Use a separate, tiny form per row (NOT nested inside bulk form) #}
+            <form method="post" action="{% url 'admin-notifications-mark-read' n.id %}" style="display:inline">
+              {% csrf_token %}
+              <button class="button" type="submit">Mark read</button>
+            </form>
+          {% else %}
+            <span style="color:#4caf50; font-weight:600">Read</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">No notifications.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{# Pagination controls #}
+{% if page_obj.paginator.num_pages > 1 %}
+  <div class="paginator">
+    {% if page_obj.has_previous %}
+      <a href="?status={{ status_filter }}&page={{ page_obj.previous_page_number }}">« Previous</a>
+    {% else %}
+      <span class="disabled">« Previous</span>
+    {% endif %}
+    <span class="current">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+    {% if page_obj.has_next %}
+      <a href="?status={{ status_filter }}&page={{ page_obj.next_page_number }}">Next »</a>
+    {% else %}
+      <span class="disabled">Next »</span>
+    {% endif %}
+  </div>
+{% endif %}
+
+<script>
+  // Select-all toggle (targets checkboxes that belong to the bulk form)
+  const selectAll = document.getElementById('select-all');
+  const rowChecks = () => document.querySelectorAll('input.row-check[form="bulk-form"]');
+  if (selectAll) {
+    selectAll.addEventListener('change', e => {
+      rowChecks().forEach(c => c.checked = e.target.checked);
+    });
+  }
+
+  // Only validate when the BULK button submitted the bulk form
+  const bulkForm = document.getElementById("bulk-form");
+  bulkForm.addEventListener("submit", function(e) {
+    if (!e.submitter || e.submitter.id !== "bulk-go") { return; } // ignore other submits
+    const action = document.getElementById("bulk-action").value;
+    if (action === "bulk_delete") {
+      const checked = !!document.querySelector('input.row-check[form="bulk-form"]:checked');
+      if (!checked) {
+        alert("Please select at least one notification to remove.");
+        e.preventDefault();
+        return;
+      }
+      if (!confirm("Are you sure you want to remove the selected notifications?")) {
+        e.preventDefault();
+        return;
+      }
+    }
+  });
+</script>
+{% endblock %}

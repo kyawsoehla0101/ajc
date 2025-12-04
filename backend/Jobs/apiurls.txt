@@ -1,0 +1,19 @@
+#job category
+http://127.0.0.1:8000/job/job-categories/
+http://127.0.0.1:8000/job/job-categories/create/
+http://127.0.0.1:8000/job/job-categories/detail/<uuid:pk>/
+http://127.0.0.1:8000/job/job-categories/update/<uuid:pk>/
+http://127.0.0.1:8000/job/job-categories/delete/<uuid:pk>/
+
+
+
+#jobs
+http://127.0.0.1:8000/job/jobs/
+http://127.0.0.1:8000/job/jobs/create/
+http://127.0.0.1:8000/job/jobs/detail/<uuid:pk>/
+http://127.0.0.1:8000/job/jobs/update/<uuid:pk>/
+http://127.0.0.1:8000/job/jobs/delete/<uuid:pk>/
+
+#searh
+http://127.0.0.1:8000/job/search/?q=WebDevelopment&loc=Mrauk%20Oo
+
