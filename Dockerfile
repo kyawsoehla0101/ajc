@@ -46,8 +46,10 @@ COPY backend/manage.py ./manage.py
 #  (frontend_dist ကိုသုံးနေတဲ့အတွက် ဒီ path ထားရမယ်)
 COPY --from=frontend-build /app/frontend/frontend_dist ./backend/static/
 
-# ✅ Collect static
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput || true
+RUN echo "=== Collectstatic debug output ==="
+RUN python -X dev manage.py collectstatic --noinput
+
 
 
 # ---------------------------
