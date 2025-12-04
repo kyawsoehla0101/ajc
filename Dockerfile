@@ -28,7 +28,7 @@ COPY backend/ ./backend
 COPY backend/manage.py .
 
 # Copy frontend build into Django static folder
-COPY --from=frontend-build /app/frontend/dist ./backend/static/
+COPY --from=frontend-build /app/frontend/frontend_dist ./backend/static/
 
 # Collect static
 RUN python manage.py collectstatic --noinput
