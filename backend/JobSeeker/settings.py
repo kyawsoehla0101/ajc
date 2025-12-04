@@ -179,7 +179,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "JobSeeker" / "static"]
+if IS_DOCKER_BUILD:
+    STATICFILES_DIRS = []
+else:
+    STATICFILES_DIRS = [BASE_DIR / "JobSeeker" / "static"]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -259,3 +262,12 @@ DEFAULT_FROM_EMAIL = "no-reply@yourdomain.com"
 #Meaida files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+IS_DOCKER_BUILD = os.environ.get("IS_DOCKER_BUILD") == "1"
+
+if IS_DOCKER_BUILD:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'temp.sqlite3',
+        }
+    }
